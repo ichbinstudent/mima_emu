@@ -4,7 +4,6 @@ This is a simple emulator for mima code.
 
 To use it just paste your instructions inside the asm variable. You can use any seperator you like between the instructions.
 
-######################################
 asm = 	""" LDC 0,
 			STV y,
 			LABEL while,
@@ -23,7 +22,6 @@ asm = 	""" LDC 0,
 			JMP while,
 			LABEL end,
 			HALT"""
-########################################
 
 You only need to change the label naming from "loop:" to "LABEL loop".
 The memory is stored in a dictionary. You can add your own addresses and values.
