@@ -1,4 +1,4 @@
-import re, sys
+import re
 
 class Memory:
 	def __init__(self, mem= {}):
@@ -9,14 +9,6 @@ class Memory:
 	def StoreVal(self, pos, val):
 		self.mem[pos] = int(val)
 
-speicher = {
-	'x': 62,
-	'y': 0,
-}
-
-
-#asm = "LDC 0;STV z;LABEL A; EQL x;NOT;JMN B;HALT;LABEL B; LDV y;ADD z;STV z;LDC 0;NOT;ADD x;STV x;LDC 0;LABEL C;JMP A"
-#asm = "LDV y;ADD z;STV z;LDC 0;NOT;ADD x;STV x;LDC 0"
 
 asm = 	""" LDC 0,
 			STV y,
@@ -38,7 +30,10 @@ asm = 	""" LDC 0,
 			HALT"""
 
 
-memory = Memory(speicher)
+memory = Memory({
+	'x': 10,
+	'y': 0,
+})
 akku = 0
 labels = []
 
@@ -55,10 +50,6 @@ while (pos < len(final)):
 		continue
 	pos+=1
 
-print(labels)
-print(final)
-
-
 pos = 0
 while (pos < len(final)):
 	akku = akku % (2**24)
@@ -67,8 +58,8 @@ while (pos < len(final)):
 		print(x, final[pos+1])
 	else:
 		print(x)
-	#print(memory.mem, akku)
-	print('\t'.join(str(format(memory.mem[e], '024b')) for e in memory.mem), format(akku, '024b'))
+	#print(memory.mem, akku) # decimal
+	print('\t'.join(str(format(memory.mem[e], '024b')) for e in memory.mem), format(akku, '024b')) # binary
 	if(x == 'AND'):
 		akku = akku & memory.ReadVal(final[pos + 1])
 		pos += 2
