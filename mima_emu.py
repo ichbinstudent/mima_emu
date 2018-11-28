@@ -4,36 +4,58 @@ class Memory:
 	def __init__(self, mem= {}):
 		self.mem = mem
 	def ReadVal(self, pos):
-		return int(self.mem[pos])
+		return self.mem[pos]
 
 	def StoreVal(self, pos, val):
-		self.mem[pos] = int(val)
+		self.mem[pos] = val
 
 
-asm = 	""" LDC 0,
-			STV y,
-			LABEL while,
-			LDC 0,
-			NOT,
-			ADD x,
-			JMN end,
-			LDC 0,
-			NOT,
-			ADD x,
-			AND x,
-			STV x,
-			LDC 1,
-			ADD y,
-			STV y,
-			JMP while,
-			LABEL end,
-			HALT"""
+asm = 	"""
+		LDC 0,
+		STV i,
+		LABEL loop,
+		LDV i,
+		STIV i,
+		LDC 1,
+		ADD i,
+		STV i,
+		LDC 5,
+		EQL i,
+		NOT
+		JMN loop,
+		HALT
+		"""
 
 
 memory = Memory({
-	'x': 10,
-	'y': 0,
-})
+	'i':  '0',
+	'0': '1',
+	'1': '1',
+	'2': '1',
+	'3': '1',
+	'4': '1',
+	})
+'''
+	'6': '0',
+	'7': '10',
+	'8': '0',
+	'9': '10',
+	'10': '0',
+	'11': '10',
+	'12': '0',
+	'13': '10',
+	'14': '0',
+	'15': '10',
+	'16': '0',
+	'17': '10',
+	'18': '0',
+	'19': '10',
+	'20': '0',
+	'21': '10',
+	'22': '0',
+	'23': '10',
+	'24': '0',
+'''
 akku = 0
 labels = []
 
@@ -58,10 +80,18 @@ while (pos < len(final)):
 		print(x, final[pos+1])
 	else:
 		print(x)
-	#print(memory.mem, akku) # decimal
-	print('\t'.join(str(format(memory.mem[e], '024b')) for e in memory.mem), format(akku, '024b')) # binary
+	print(memory.mem, akku) # decimal
+	#print('\t'.join(str(format(memory.mem[e], '024b')) for e in memory.mem), format(akku, '024b')) # binary
+	if(x == 'STIV'):
+		memory.StoreVal(memory.ReadVal(final[pos + 1]), str(akku))
+		pos += 2
+		continue
+	if(x == 'LDIV'):
+		akku = int(memory.ReadVal(memory.ReadVal(final[pos + 1])))
+		pos += 2
+		continue
 	if(x == 'AND'):
-		akku = akku & memory.ReadVal(final[pos + 1])
+		akku = akku & int(memory.ReadVal(final[pos + 1]))
 		pos += 2
 		continue
 	if(x == 'LDC'):
@@ -69,19 +99,19 @@ while (pos < len(final)):
 		pos += 2
 		continue
 	if(x == 'ADD'):
-		akku = akku + memory.ReadVal(final[pos + 1])
+		akku = akku + int(memory.ReadVal(final[pos + 1]))
 		pos += 2
 		continue
 	if(x == 'LDV'):
-		akku = memory.ReadVal(final[pos + 1])
+		akku = int(memory.ReadVal(final[pos + 1]))
 		pos += 2
 		continue
 	if(x == 'STV'):
-		memory.StoreVal(final[pos + 1], akku)
+		memory.StoreVal(final[pos + 1], str(akku))
 		pos += 2
 		continue
 	if(x == 'EQL'):
-		if (akku == memory.ReadVal(final[pos + 1])):
+		if (akku == int(memory.ReadVal(final[pos + 1]))):
 			akku = -1
 		else:
 			akku = 0
