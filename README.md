@@ -37,4 +37,4 @@ memory = Memory({
 
 The instruction set is not complete!
 Supported are the following:
-AND, LDC, ADD, LDV, STV, EQL, NOT, JMP, JMN, HALT
+AND, LDC, ADD, LDV, STV, LDIV, STIV, EQL, NOT, JMP, JMN, HALT
