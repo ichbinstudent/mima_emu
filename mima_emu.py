@@ -9,7 +9,6 @@ class Memory:
 	def StoreVal(self, pos, val):
 		self.mem[pos] = val
 
-'''
 asm = 	"""
 		LDC 0,
 		STV i,
@@ -19,29 +18,12 @@ asm = 	"""
 		LDC 1,
 		ADD i,
 		STV i,
-		LDC 4,
+		LDC 24,
 		NOT,
 		ADD i,
 		JMN loop,
 		HALT
 		"""
-'''
-
-asm="""
-	LDC 0,
-	STV x,
-	LABEL while,
-	LDV x,
-	EQL 4,
-	JMN end,
-	STIV x,
-	LDV 1,
-	ADD x,
-	STV x,
-	JMP while,
-	LABEL end,
-	HALT
-	"""
 
 memory = Memory({
 	'i':  '0',
